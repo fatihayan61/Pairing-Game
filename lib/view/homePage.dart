@@ -83,66 +83,74 @@ class _HomePageState extends State<HomePage> {
         crossAxisCount: 2,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return ItemGridView(item: _items[index]);
+        return item(cardDetails: _items[index]);
       },
     );
   }
-}
 
-class ItemGridView extends StatefulWidget {
-  const ItemGridView({Key? key, required this.item}) : super(key: key);
-  final ItemModel item;
-  @override
-  State<ItemGridView> createState() => _ItemGridViewState();
-}
-
-class _ItemGridViewState extends State<ItemGridView> {
-  @override
-  Widget build(BuildContext context) {
+  InkWell item({required ItemModel cardDetails}) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => GamePanelPage(item: widget.item),
+            builder: (BuildContext context) => GamePanelPage(item: cardDetails),
           ),
         );
       },
-      child: Card(
-        elevation: 10,
-        shadowColor: Colors.black,
-        color: widget.item.color,
-        child: Column(
-          children: [
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  widget.item.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(color: Colors.black),
-                ),
-              ),
-            ),
-            const Expanded(
-              child: Center(
-                child: Icon(
-                  Icons.workspace_premium_outlined,
-                  size: 30,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                widget.item.time,
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-          ],
+      child: cardItem(cardDetails),
+    );
+  }
+
+  Card cardItem(ItemModel cardDetails) {
+    return Card(
+      elevation: 10,
+      shadowColor: Colors.black,
+      color: cardDetails.color,
+      child: cardItemDetails(cardDetails),
+    );
+  }
+
+  Column cardItemDetails(ItemModel cardDetails) {
+    return Column(
+      children: [
+        Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: cardItemDetailsTitle(cardDetails.title),
+          ),
         ),
-      ),
+        Expanded(
+          child: Center(
+            child: cardItemDetailsIcon(),
+          ),
+        ),
+        Expanded(
+          child: cardItemDetailsTime(cardDetails.time),
+        ),
+      ],
+    );
+  }
+
+  Text cardItemDetailsTime(String time) {
+    return Text(
+      time,
+      style: Theme.of(context).textTheme.headline5,
+    );
+  }
+
+  Icon cardItemDetailsIcon() {
+    return const Icon(
+      Icons.workspace_premium_outlined,
+      size: 30,
+    );
+  }
+
+  Text cardItemDetailsTitle(String title) {
+    return Text(
+      title,
+      style:
+          Theme.of(context).textTheme.headline4!.copyWith(color: Colors.black),
     );
   }
 }
