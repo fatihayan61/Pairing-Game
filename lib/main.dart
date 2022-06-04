@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pairing/view/choicePage.dart';
+import 'package:pairing/view/homePage.dart';
 
 void main() {
   runApp(const MyApp());
